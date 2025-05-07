@@ -1,0 +1,3 @@
+/**
+ * Observe tabs
+ */

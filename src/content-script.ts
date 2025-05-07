@@ -1,0 +1,4 @@
+/**
+ * Logics to change favicons
+ */
+
