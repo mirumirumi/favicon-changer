@@ -25,6 +25,7 @@
         ],
         "types": [
             "web",
+            "chrome",
             "bun-types",
             "vitest/globals",
             "vitest/importMeta"

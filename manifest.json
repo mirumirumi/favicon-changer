@@ -19,8 +19,8 @@
         "type": "module"
     },
     "permissions": [
-        "storage",
         "tabs",
+        "storage",
         "scripting"
     ],
     "host_permissions": [
