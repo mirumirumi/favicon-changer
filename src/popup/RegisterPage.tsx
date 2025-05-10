@@ -15,10 +15,12 @@ export const RegisterPage = ({ kind = "new", onShowListPage }: Props) => {
   const [url, setUrl] = useState("")
   const [filePath, setFilePath] = useState<string | null>(null)
   const [file, setFile] = useState<File | null>(null)
-  const [isDisabled, setIsDisabled] = useState(true)
   const [isAnimating, setIsAnimating] = useState(false)
 
+  const timer = useRef<number>(0)
   const fileRef = useRef<HTMLInputElement | null>(null)
+
+  const isDisabled = !(file && url)
 
   const originalCtrl = useAnimation()
   const changeToCtrl = useAnimation()
@@ -36,25 +38,24 @@ export const RegisterPage = ({ kind = "new", onShowListPage }: Props) => {
   }, [])
 
   useEffect(() => {
+    const prev = filePath
     return () => {
-      if (filePath) {
-        URL.revokeObjectURL(filePath)
-      }
+      prev && URL.revokeObjectURL(prev)
     }
   }, [filePath])
 
-  useEffect(() => {
-    if (file && url) {
-      setIsDisabled(false)
-    }
-  }, [file, url])
-
-  const handleInput = async (e: FormEvent<HTMLInputElement>) => {
+  const handleInput = (e: FormEvent<HTMLInputElement>) => {
     const inputtedUrl = (e.target as HTMLInputElement).value
     setUrl(inputtedUrl)
-    const domain = new URL(inputtedUrl).hostname
-    const res = await fetch(`https://www.google.com/s2/favicons?sz=128&domain=${domain}`)
-    setFaviconOriginal(res.url)
+
+    clearTimeout(timer.current)
+    timer.current = window.setTimeout(async () => {
+      try {
+        const domain = new URL(inputtedUrl).hostname
+        const res = await fetch(`https://www.google.com/s2/favicons?sz=128&domain=${domain}`)
+        setFaviconOriginal(res.url)
+      } catch (_) {}
+    }, 333)
   }
 
   const handleFileUploadButtonClick = () => {
@@ -141,7 +142,7 @@ export const RegisterPage = ({ kind = "new", onShowListPage }: Props) => {
             {filePath !== null ? (
               <>
                 <motion.img
-                  src={filePath!}
+                  src={filePath}
                   alt="uploaded-image"
                   className="absolute h-full aspect-square"
                   style={{ left: 0, top: 0 }}
