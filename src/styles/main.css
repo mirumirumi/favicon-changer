@@ -1,1 +1,28 @@
 @import "tailwindcss";
+
+@theme {
+  --color-primary: #284a77;
+  --color-text-white: #ffffff;
+  --color-text-label: #dbdbdb;
+  --color-text-danger: #e27b7b;
+  --focus-visible-outline: solid 2px #a1afe8;
+}
+
+@layer base {
+  img {
+    vertical-align: middle;
+  }
+
+  button {
+    position: relative;
+    cursor: pointer;
+  }
+}
+
+*:focus-visible {
+  outline: var(--focus-visible-outline);
+}
+
+.transition-outline {
+  transition: outline-color 0.15s ease;
+}
