@@ -7,8 +7,8 @@ export const App = () => {
   const [page, setPage] = useState<"register" | "list">("register")
 
   return page === "register" ? (
-    <RegisterPage onShowListPage={() => setPage("list")} />
+    <RegisterPage navigateListPage={() => setPage("list")} />
   ) : (
-    <ListPage onShowRegisterPage={() => setPage("register")} />
+    <ListPage navigateRegisterPage={() => setPage("register")} />
   )
 }

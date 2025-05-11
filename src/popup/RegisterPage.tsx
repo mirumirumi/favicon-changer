@@ -5,14 +5,16 @@ import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react"
 
 import logo from "../assets/placeholder.png"
 import { LoadSpinner } from "./LoadSpinner"
+import { MenuHeader } from "./MenuHeader"
 import { fileToFaviconDataURI } from "./image"
 
 interface Props {
   kind?: "new" | "edit"
-  onShowListPage: () => void
+  url?: string
+  navigateListPage: () => void
 }
 
-export const RegisterPage = ({ kind = "new", onShowListPage }: Props) => {
+export const RegisterPage = ({ kind = "new", navigateListPage }: Props) => {
   const [isLoading, setIsLoading] = useState(true)
   const [faviconOriginal, setFaviconOriginal] = useState("")
   const [url, setUrl] = useState("")
@@ -46,10 +48,6 @@ export const RegisterPage = ({ kind = "new", onShowListPage }: Props) => {
       prev && URL.revokeObjectURL(prev)
     }
   }, [filePath])
-
-  const handleLoadFinished = () => {
-    setIsLoading(false)
-  }
 
   const handleInput = (e: FormEvent<HTMLInputElement>) => {
     const inputtedUrl = (e.target as HTMLInputElement).value
@@ -88,7 +86,7 @@ export const RegisterPage = ({ kind = "new", onShowListPage }: Props) => {
     }
   }
 
-  const handleRegister = async () => {
+  const register = async () => {
     if (isAnimating) return
     setIsAnimating(true)
 
@@ -129,7 +127,7 @@ export const RegisterPage = ({ kind = "new", onShowListPage }: Props) => {
 
   return (
     <div className="pt-[12px] px-[18px] pb-[21px] text-text-white">
-      <div className="h-[62px]">a</div>
+      <MenuHeader registerPageKind={kind} navigateListPage={navigateListPage} />
 
       <div className="flex justify-evenly gap-6 mb-[46px]">
         <div>
@@ -146,7 +144,7 @@ export const RegisterPage = ({ kind = "new", onShowListPage }: Props) => {
               className="h-full aspect-square"
               style={isLoading ? { opacity: "0" } : { opacity: "1" }}
               animate={originalCtrl}
-              onLoad={handleLoadFinished}
+              onLoad={() => setIsLoading(false)}
             />
           </div>
         </div>
@@ -212,7 +210,7 @@ export const RegisterPage = ({ kind = "new", onShowListPage }: Props) => {
         type="button"
         className="w-full h-[38px] pb-[2px] font-bold text-[13.6px] rounded-[7px] bg-primary hover:opacity-75 disabled:opacity-50 disabled:cursor-auto transition duration-150"
         disabled={isDisabled || isAnimating}
-        onClick={handleRegister}
+        onClick={register}
       >
         {kind === "new" ? "Register" : "Update"}
       </button>
