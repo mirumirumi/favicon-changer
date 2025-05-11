@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { motion, useAnimation } from "framer-motion"
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react"
 
+import logo from "../assets/placeholder.png"
 import { LoadSpinner } from "./LoadSpinner"
 import { fileToFaviconDataURI } from "./image"
 
@@ -59,9 +60,13 @@ export const RegisterPage = ({ kind = "new", onShowListPage }: Props) => {
       try {
         const domain = new URL(inputtedUrl).hostname
         const res = await fetch(`https://www.google.com/s2/favicons?sz=128&domain=${domain}`)
-        setFaviconOriginal(res.url)
+        if (res.status === 404) {
+          setFaviconOriginal(logo)
+        } else {
+          setFaviconOriginal(res.url)
+        }
       } catch (_) {}
-    }, 333)
+    }, 222)
   }
 
   const handleFileUploadButtonClick = () => {
@@ -156,7 +161,7 @@ export const RegisterPage = ({ kind = "new", onShowListPage }: Props) => {
                   src={filePath}
                   alt="uploaded-image"
                   className="absolute h-full aspect-square"
-                  style={{ left: 0, top: 0 }}
+                  style={{ top: 0, left: 0 }}
                   animate={changeToCtrl}
                 />
                 {!isAnimating && (
