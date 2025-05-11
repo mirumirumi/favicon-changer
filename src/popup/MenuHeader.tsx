@@ -1,6 +1,16 @@
-import { faAngleDown, faBars } from "@fortawesome/free-solid-svg-icons"
+import { faXTwitter } from "@fortawesome/free-brands-svg-icons"
+import { faAngleDown, faBars, faBug, faClose, faIcons } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react"
+import {
+  CloseButton,
+  Dialog,
+  DialogBackdrop,
+  DialogPanel,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuItems,
+} from "@headlessui/react"
 import { MouseEvent, useState } from "react"
 
 interface Props {
@@ -29,6 +39,58 @@ export const MenuHeader = ({ registerPageKind, url, navigateListPage }: Props) =
       <button type="button" className="flex pt-[1px]" onClick={() => setIsOpenMainMenu(true)}>
         <FontAwesomeIcon icon={faBars} className="text-[24px] text-[#74767D]" />
       </button>
+      <Dialog
+        open={isOpenMainMenu}
+        onClose={() => setIsOpenMainMenu(false)}
+        className="relative z-1 text-[14px] text-text-label"
+      >
+        <DialogBackdrop className="fixed inset-0 bg-black/66" />
+        <div className="fixed top-0 bottom-0 w-[67%]">
+          <DialogPanel
+            className="h-full pt-[9px] pl-[5px] pr-[13px] bg-[#30353D] transition duration-100 ease-out data-closed:translate-x-[-100%]"
+            transition
+          >
+            <div className="mb-[19px] text-right">
+              <CloseButton>
+                <FontAwesomeIcon icon={faClose} className="text-[27px] text-[#74767D]" />
+              </CloseButton>
+            </div>
+            <button
+              type="button"
+              className="flex items-center gap-[12px] w-full h-[35px] my-[7px] px-[13px] pb-[2px] rounded-[7px] hover:bg-[#454B55]"
+              onClick={navigateListPage}
+            >
+              <FontAwesomeIcon icon={faIcons} className="pt-[2px] text-[14px] text-[#DBDBDB]" />
+              Your Changed favicons
+            </button>
+            <hr className="my-[13px] border-[#5B5B5B]" />
+            <button
+              type="button"
+              className="flex items-center gap-[12px] w-full h-[35px] my-[7px] px-[13px] pb-[2px] rounded-[7px] hover:bg-[#454B55]"
+              onClick={() =>
+                chrome.tabs.create({
+                  url: "https://github.com/mirumirumi/favicon-changer/issues",
+                })
+              }
+            >
+              <FontAwesomeIcon icon={faBug} className="pt-[2px] text-[14px] text-[#DBDBDB]" />
+              Bug report
+            </button>
+            <button
+              type="button"
+              className="flex items-center gap-[12px] w-full h-[35px] my-[7px] px-[13px] pb-[2px] rounded-[7px] hover:bg-[#454B55]"
+              onClick={() =>
+                chrome.tabs.create({
+                  url: "https://x.com/__mirumi__",
+                })
+              }
+            >
+              <FontAwesomeIcon icon={faXTwitter} className="pt-[2px] text-[14px] text-[#DBDBDB]" />
+              @__mirumi__
+            </button>
+          </DialogPanel>
+        </div>
+      </Dialog>
 
       <Menu>
         <MenuButton className="flex">
