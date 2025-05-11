@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { motion, useAnimation } from "framer-motion"
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react"
 
+import { LoadSpinner } from "./LoadSpinner"
 import { fileToFaviconDataURI } from "./image"
 
 interface Props {
@@ -11,6 +12,7 @@ interface Props {
 }
 
 export const RegisterPage = ({ kind = "new", onShowListPage }: Props) => {
+  const [isLoading, setIsLoading] = useState(true)
   const [faviconOriginal, setFaviconOriginal] = useState("")
   const [url, setUrl] = useState("")
   const [filePath, setFilePath] = useState<string | null>(null)
@@ -43,6 +45,10 @@ export const RegisterPage = ({ kind = "new", onShowListPage }: Props) => {
       prev && URL.revokeObjectURL(prev)
     }
   }, [filePath])
+
+  const handleLoadFinished = () => {
+    setIsLoading(false)
+  }
 
   const handleInput = (e: FormEvent<HTMLInputElement>) => {
     const inputtedUrl = (e.target as HTMLInputElement).value
@@ -125,12 +131,17 @@ export const RegisterPage = ({ kind = "new", onShowListPage }: Props) => {
           <div className="mb-[25px] font-bold text-[15px] text-text-label text-center">
             Original
           </div>
-          <div className="w-[82px] h-[82px]">
+          <div className="relative w-[82px] h-[82px]">
+            <div style={isLoading ? { opacity: "1" } : { opacity: "0" }}>
+              <LoadSpinner size="37%" />
+            </div>
             <motion.img
               src={faviconOriginal}
               alt="favicon-original"
               className="h-full aspect-square"
+              style={isLoading ? { opacity: "0" } : { opacity: "1" }}
               animate={originalCtrl}
+              onLoad={handleLoadFinished}
             />
           </div>
         </div>
