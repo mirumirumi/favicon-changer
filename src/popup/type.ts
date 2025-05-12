@@ -3,6 +3,7 @@ export interface RegisteredFavicon {
   original: string // base64
   changeTo: string // base64
   enabled: boolean
+  updatedAt: number
 }
 
 export type FaviconsInLocalStorage = Record<string /* url */, Omit<RegisteredFavicon, "url">>

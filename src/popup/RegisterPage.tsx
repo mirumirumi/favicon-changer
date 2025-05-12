@@ -135,6 +135,7 @@ export const RegisterPage = ({ _url, navigateListPage }: Props) => {
         original: faviconOriginal,
         changeTo: dataURI,
         enabled: true,
+        updatedAt: Date.now(),
       },
     }) // ~1ms
 

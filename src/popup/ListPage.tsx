@@ -15,14 +15,17 @@ export const ListPage = ({ navigateRegisterPage }: Props) => {
 
   useEffect(() => {
     chrome.storage.local.get<FaviconsInLocalStorage>(null).then((res) => {
-      const mapped = Object.entries(res).map(([url, data]) => {
-        return {
-          url,
-          original: data.original,
-          changeTo: data.changeTo,
-          enabled: data.enabled,
-        }
-      })
+      const mapped = Object.entries(res)
+        .map(([url, data]) => {
+          return {
+            url,
+            original: data.original,
+            changeTo: data.changeTo,
+            enabled: data.enabled,
+            updatedAt: data.updatedAt,
+          }
+        })
+        .toSorted((a, b) => a.updatedAt - b.updatedAt)
       setFavicons(mapped)
     })
   }, [])
@@ -36,6 +39,7 @@ export const ListPage = ({ navigateRegisterPage }: Props) => {
             original: favicon.original,
             changeTo: favicon.changeTo,
             enabled: !favicon.enabled,
+            updatedAt: Date.now(),
           },
         })
       }
