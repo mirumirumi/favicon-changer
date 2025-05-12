@@ -14,7 +14,7 @@ import {
 import { MouseEvent, useState } from "react"
 
 interface Props {
-  registerPageKind: "new" | "edit"
+  registerPageKind: "new" | "edit" | "none"
   url?: string
   navigateListPage: () => void
 }

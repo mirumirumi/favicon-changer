@@ -27,3 +27,14 @@
 .transition-outline {
   transition: outline-color 0.15s ease;
 }
+
+::-webkit-scrollbar {
+  width: 11px;
+}
+
+::-webkit-scrollbar-thumb {
+  border: solid 3.5px rgba(0, 0, 0, 0);
+  background-clip: padding-box;
+  border-radius: 9999px;
+  background-color: #58575e;
+}

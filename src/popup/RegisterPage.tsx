@@ -7,17 +7,17 @@ import logo from "../assets/placeholder.png"
 import { LoadSpinner } from "./LoadSpinner"
 import { MenuHeader } from "./MenuHeader"
 import { fileToFaviconDataURI } from "./image"
+import { FaviconsInLocalStorage, RegisteredFavicon } from "./type"
 
 interface Props {
-  kind?: "new" | "edit"
-  url?: string
+  _url?: string
   navigateListPage: () => void
 }
 
-export const RegisterPage = ({ kind = "new", navigateListPage }: Props) => {
+export const RegisterPage = ({ _url, navigateListPage }: Props) => {
   const [isLoading, setIsLoading] = useState(true)
   const [faviconOriginal, setFaviconOriginal] = useState("")
-  const [url, setUrl] = useState("")
+  const [url, setUrl] = useState(_url ?? "")
   const [filePath, setFilePath] = useState<string | null>(null)
   const [file, setFile] = useState<File | null>(null)
   const [isAnimating, setIsAnimating] = useState(false)
@@ -25,22 +25,35 @@ export const RegisterPage = ({ kind = "new", navigateListPage }: Props) => {
   const timer = useRef<number>(0)
   const fileRef = useRef<HTMLInputElement | null>(null)
 
+  const kind = _url !== undefined ? "edit" : "new"
   const isDisabled = !(file && url)
 
   const originalCtrl = useAnimation()
   const changeToCtrl = useAnimation()
 
   useEffect(() => {
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      if (tabs[0]?.favIconUrl) {
-        setFaviconOriginal(tabs[0].favIconUrl)
-      }
-      if (tabs[0]?.url) {
-        const currentUrl = new URL(tabs[0].url)
-        setUrl(`${currentUrl.origin}/*`)
-      }
-    })
-  }, [])
+    if (kind === "new") {
+      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+        if (tabs[0]?.favIconUrl) {
+          setFaviconOriginal(tabs[0].favIconUrl)
+        }
+        if (tabs[0]?.url) {
+          const currentUrl = new URL(tabs[0].url)
+          setUrl(`${currentUrl.origin}/*`)
+        }
+      })
+    } else {
+      chrome.storage.local.get<FaviconsInLocalStorage>(_url!).then((res) => {
+        Object.entries(res).forEach(([url, data]) => {
+          if (url === _url) {
+            setFaviconOriginal(data.original)
+            setFilePath(data.changeTo)
+          }
+        })
+      })
+      setUrl(_url!)
+    }
+  }, [kind, _url])
 
   useEffect(() => {
     const prev = filePath
@@ -117,12 +130,16 @@ export const RegisterPage = ({ kind = "new", navigateListPage }: Props) => {
     // })
 
     const dataURI = await fileToFaviconDataURI(file!)
-    await chrome.storage.local.set({
-      [url]: dataURI,
+    await chrome.storage.local.set<FaviconsInLocalStorage>({
+      [url]: {
+        original: faviconOriginal,
+        changeTo: dataURI,
+        enabled: true,
+      },
     }) // ~1ms
 
     await new Promise((resolve) => setTimeout(resolve, 333))
-    window.close()
+    navigateListPage()
   }
 
   return (
@@ -197,12 +214,15 @@ export const RegisterPage = ({ kind = "new", navigateListPage }: Props) => {
         <input
           type="text"
           value={url}
-          className="w-full mb-[4px] px-[12px] py-[2px] border-[1.1px] border-[#74767D] rounded-[5px] text-[13.6px] leading-[2.3] bg-[#3B3F46] outline-transparent transition-outline"
+          className="w-full mb-[4px] px-[12px] py-[2px] border-[1.1px] border-[#74767D] rounded-[5px] text-[13.6px] leading-[2.3] bg-[#3B3F46] outline-transparent transition-outline disabled:text-[#bdbdbd] disabled:border-transparent"
           placeholder="https://google.com/*"
+          disabled={kind === "edit"}
           onInput={handleInput}
         />
         <div className="px-[3px] text-[10px] text-text-label">
-          You can use the glob pattern or match the URL exactly.
+          {kind === "new"
+            ? "You can use the glob pattern or match the URL exactly."
+            : "URL cannot be updated."}
         </div>
       </div>
 
