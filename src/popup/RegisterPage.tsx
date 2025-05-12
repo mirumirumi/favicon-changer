@@ -3,11 +3,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { motion, useAnimation } from "framer-motion"
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react"
 
-import logo from "../assets/placeholder.png"
+import notFoundImage from "../assets/placeholder.png"
 import { LoadSpinner } from "./LoadSpinner"
 import { MenuHeader } from "./MenuHeader"
 import { fileToFaviconDataURI } from "./image"
-import { FaviconsInLocalStorage, RegisteredFavicon } from "./type"
+import { FaviconsInLocalStorage } from "./type"
 
 interface Props {
   _url?: string
@@ -16,7 +16,7 @@ interface Props {
 
 export const RegisterPage = ({ _url, navigateListPage }: Props) => {
   const [isLoading, setIsLoading] = useState(true)
-  const [faviconOriginal, setFaviconOriginal] = useState("")
+  const [faviconOriginal, setFaviconOriginal] = useState(notFoundImage)
   const [url, setUrl] = useState(_url ?? "")
   const [filePath, setFilePath] = useState<string | null>(null)
   const [file, setFile] = useState<File | null>(null)
@@ -72,7 +72,7 @@ export const RegisterPage = ({ _url, navigateListPage }: Props) => {
         const domain = new URL(inputtedUrl).hostname
         const res = await fetch(`https://www.google.com/s2/favicons?sz=128&domain=${domain}`)
         if (res.status === 404) {
-          setFaviconOriginal(logo)
+          setFaviconOriginal(notFoundImage)
         } else {
           setFaviconOriginal(res.url)
         }
