@@ -11,7 +11,8 @@ export const App = () => {
     <RegisterPage _url={url} navigateListPage={() => setPage("list")} />
   ) : (
     <ListPage
-      navigateRegisterPage={(url) => {
+      navigateRegisterNewPage={() => setPage("register")}
+      navigateRegisterEditPage={(url) => {
         setUrl(url)
         setPage("register")
       }}

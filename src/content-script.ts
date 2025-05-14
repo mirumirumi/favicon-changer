@@ -49,10 +49,13 @@ const handleApply = (favicon: RegisteredFavicon | null) => {
   }
 }
 
+// When page is loaded
 getRegisterdFavicon().then((favicon) => handleApply(favicon))
 
-setInterval(() => getRegisterdFavicon().then((favicon) => handleApply(favicon)), 3_000)
+// Polling at intervals
+setInterval(() => getRegisterdFavicon().then((favicon) => handleApply(favicon)), 1_000)
 
+// Reciece from popup message
 chrome.runtime.onMessage.addListener((msg) => {
   if (msg.type === "favicon-updated") {
     getRegisterdFavicon().then((favicon) => handleApply(favicon))

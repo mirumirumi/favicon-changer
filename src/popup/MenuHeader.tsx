@@ -1,5 +1,12 @@
 import { faXTwitter } from "@fortawesome/free-brands-svg-icons"
-import { faAngleDown, faBars, faBug, faClose, faIcons } from "@fortawesome/free-solid-svg-icons"
+import {
+  faAngleDown,
+  faBars,
+  faBug,
+  faClose,
+  faIcons,
+  faPlusCircle,
+} from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
   CloseButton,
@@ -14,12 +21,20 @@ import {
 import { MouseEvent, useState } from "react"
 
 interface Props {
+  currentPage: "register-new" | "register-edit" | "list"
   registerPageKind: "new" | "edit" | "none"
   url?: string
+  navigateRegisterPage: () => void
   navigateListPage: () => void
 }
 
-export const MenuHeader = ({ registerPageKind, url, navigateListPage }: Props) => {
+export const MenuHeader = ({
+  currentPage,
+  registerPageKind,
+  url,
+  navigateRegisterPage,
+  navigateListPage,
+}: Props) => {
   const [isOpenMainMenu, setIsOpenMainMenu] = useState(false)
   const [isClickedDeleteOnce, setIsClickedDeleteOnce] = useState(false)
 
@@ -58,7 +73,34 @@ export const MenuHeader = ({ registerPageKind, url, navigateListPage }: Props) =
             <button
               type="button"
               className="flex items-center gap-[12px] w-full h-[35px] my-[7px] px-[13px] pb-[2px] rounded-[7px] hover:bg-[#454B55]"
-              onClick={navigateListPage}
+              onClick={() => {
+                if (currentPage === "register-new") {
+                  setIsOpenMainMenu(false)
+                } else if (currentPage === "register-edit") {
+                  location.reload()
+                } else {
+                  navigateRegisterPage()
+                }
+              }}
+            >
+              <FontAwesomeIcon
+                icon={faPlusCircle}
+                className="pt-[2px] text-[14px] text-[#DBDBDB]"
+              />
+              Register
+            </button>
+            <button
+              type="button"
+              className="flex items-center gap-[12px] w-full h-[35px] my-[7px] px-[13px] pb-[2px] rounded-[7px] hover:bg-[#454B55]"
+              onClick={() => {
+                if (currentPage === "register-new") {
+                  navigateListPage()
+                } else if (currentPage === "register-edit") {
+                  navigateListPage()
+                } else {
+                  setIsOpenMainMenu(false)
+                }
+              }}
             >
               <FontAwesomeIcon icon={faIcons} className="pt-[2px] text-[14px] text-[#DBDBDB]" />
               Your Changed favicons
@@ -114,7 +156,7 @@ export const MenuHeader = ({ registerPageKind, url, navigateListPage }: Props) =
             }
             return (
               <MenuItem>
-                <div className="flex items-center h-[38px] px-[5px] pt-[5.5px] pb-[4px]">
+                <div className="flex items-center h-[38px] px-[5px] pt-[5.5px] pb-[3px]">
                   <button
                     type="button"
                     className="block w-full h-full px-[6px] text-[14px] text-text-danger text-left rounded-[3px] translate-y-[-1px] hover:bg-[#454B55]"

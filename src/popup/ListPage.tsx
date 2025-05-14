@@ -7,10 +7,11 @@ import { MenuHeader } from "./MenuHeader"
 import { FaviconsInLocalStorage, RegisteredFavicon } from "./type"
 
 interface Props {
-  navigateRegisterPage: (url: string) => void
+  navigateRegisterNewPage: () => void
+  navigateRegisterEditPage: (url?: string) => void
 }
 
-export const ListPage = ({ navigateRegisterPage }: Props) => {
+export const ListPage = ({ navigateRegisterNewPage, navigateRegisterEditPage }: Props) => {
   const [favicons, setFavicons] = useState<Array<RegisteredFavicon>>([])
 
   useEffect(() => {
@@ -63,7 +64,12 @@ export const ListPage = ({ navigateRegisterPage }: Props) => {
   return (
     <div className="pt-[12px] px-[4px] text-text-white">
       <div className="px-[14px]">
-        <MenuHeader registerPageKind="none" navigateListPage={() => {}} />
+        <MenuHeader
+          currentPage="list"
+          registerPageKind="none"
+          navigateRegisterPage={navigateRegisterNewPage}
+          navigateListPage={() => {}}
+        />
       </div>
 
       <div
@@ -86,7 +92,7 @@ export const ListPage = ({ navigateRegisterPage }: Props) => {
                   type="button"
                   className="inline-block w-full text-[14px] text-left text-ellipsis overflow-hidden whitespace-nowrap hover:underline"
                   title={favicon.url}
-                  onClick={() => navigateRegisterPage(favicon.url)}
+                  onClick={() => navigateRegisterEditPage(favicon.url)}
                 >
                   {favicon.url}
                 </button>

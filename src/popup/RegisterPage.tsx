@@ -145,7 +145,13 @@ export const RegisterPage = ({ _url, navigateListPage }: Props) => {
 
   return (
     <div className="pt-[12px] px-[18px] pb-[21px] text-text-white">
-      <MenuHeader registerPageKind={kind} navigateListPage={navigateListPage} />
+      <MenuHeader
+        currentPage={kind === "new" ? "register-new" : "register-edit"}
+        registerPageKind={kind}
+        url={url}
+        navigateRegisterPage={() => {}}
+        navigateListPage={navigateListPage}
+      />
 
       <div className="flex justify-evenly gap-6 mb-[46px]">
         <div>
