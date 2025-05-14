@@ -5,7 +5,9 @@
     "private": true,
     "scripts": {
         "dev": "bunx --bun vite",
-        "build": "vite build"
+        "build": "vite build",
+        "test": "vitest run",
+        "test:watch": "vitest watch"
     },
     "dependencies": {
         "@fortawesome/fontawesome-svg-core": "^6.7.2",

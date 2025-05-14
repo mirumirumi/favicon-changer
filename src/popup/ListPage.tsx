@@ -22,10 +22,10 @@ export const ListPage = ({ navigateRegisterPage }: Props) => {
             original: data.original,
             changeTo: data.changeTo,
             enabled: data.enabled,
-            updatedAt: data.updatedAt,
+            createdAt: data.createdAt,
           }
         })
-        .toSorted((a, b) => a.updatedAt - b.updatedAt)
+        .toSorted((a, b) => a.createdAt - b.createdAt)
       setFavicons(mapped)
     })
   }, [])
@@ -39,7 +39,7 @@ export const ListPage = ({ navigateRegisterPage }: Props) => {
             original: favicon.original,
             changeTo: favicon.changeTo,
             enabled: !favicon.enabled,
-            updatedAt: Date.now(),
+            createdAt: favicon.createdAt,
           },
         })
       }

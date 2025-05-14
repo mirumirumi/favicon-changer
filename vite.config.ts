@@ -7,6 +7,10 @@ import manifest from "./manifest.json"
 
 export default defineConfig({
   plugins: [crx({ manifest }), react(), tailwindcss()],
+  test: {
+    globals: true,
+    mockReset: true,
+  },
   legacy: {
     // https://github.com/crxjs/chrome-extension-tools/issues/971
     skipWebSocketTokenCheck: true,
