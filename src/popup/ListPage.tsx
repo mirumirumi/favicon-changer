@@ -97,7 +97,7 @@ export const ListPage = ({ navigateRegisterPage }: Props) => {
                   className="group inline-flex w-[27px] h-[12px] items-center rounded-full bg-[#7B7B7B] translate-y-[0.5px] transition data-checked:bg-primary"
                   onChange={() => toggleEnabled(favicon.url)}
                 >
-                  <span className="w-[15px] h-[15px] rounded-full bg-[#C4C4C4] translate-y-[-0.5px] transition group-data-checked:bg-[#F2F2F2] group-data-checked:translate-x-[15px]" />
+                  <span className="w-[15px] h-[15px] rounded-full bg-[#C4C4C4] transition group-data-checked:bg-[#F2F2F2] group-data-checked:translate-x-[15px]" />
                 </Switch>
               </div>
               <button type="button" className="flex-shrink-0" onClick={() => delete_(favicon.url)}>
