@@ -30,33 +30,29 @@ export const ListPage = ({ navigateRegisterPage }: Props) => {
     })
   }, [])
 
-  // 🔴なんか統合できる気がする
-  const toggleEnabled = (url: string) => {
-    favicons.map(async (favicon) => {
+  const toggleEnabled = async (url: string) => {
+    const newFavicons = favicons.map((favicon) => {
       if (favicon.url === url) {
-        await chrome.storage.local.set<FaviconsInLocalStorage>({
-          [url]: {
-            original: favicon.original,
-            changeTo: favicon.changeTo,
-            enabled: !favicon.enabled,
-            createdAt: favicon.createdAt,
-          },
-        })
+        return {
+          ...favicon,
+          enabled: !favicon.enabled,
+        }
+      } else {
+        return favicon
       }
     })
 
-    setFavicons((favicons) => {
-      return favicons.map((favicon) => {
-        if (favicon.url === url) {
-          return {
-            ...favicon,
-            enabled: !favicon.enabled,
-          }
-        } else {
-          return favicon
-        }
-      })
+    const changed = newFavicons.find((favicon) => favicon.url === url)
+    await chrome.storage.local.set<FaviconsInLocalStorage>({
+      [url]: {
+        original: changed!.original,
+        changeTo: changed!.changeTo,
+        enabled: changed!.enabled,
+        createdAt: changed!.createdAt,
+      },
     })
+
+    setFavicons(newFavicons)
   }
 
   const delete_ = async (url: string) => {
