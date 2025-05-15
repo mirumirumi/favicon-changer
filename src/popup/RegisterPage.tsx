@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { motion, useAnimation } from "framer-motion"
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react"
 
-import notFoundImage from "../assets/placeholder.png"
+import notFoundImage from "../assets/placeholder-data-uri"
 import { LoadSpinner } from "./LoadSpinner"
 import { MenuHeader } from "./MenuHeader"
 import { fileToFaviconDataURI } from "./image"
