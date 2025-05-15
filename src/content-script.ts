@@ -52,12 +52,38 @@ const handleApply = (favicon: RegisteredFavicon | null) => {
 // When page is loaded
 getRegisterdFavicon().then((favicon) => handleApply(favicon))
 
-// Polling at intervals
-setInterval(() => getRegisterdFavicon().then((favicon) => handleApply(favicon)), 1_000)
-
-// Reciece from popup message
-chrome.runtime.onMessage.addListener((msg) => {
+// Recieve from popup message
+// biome-ignore lint/suspicious/noExplicitAny:
+const handlerOnMessage = (msg: any) => {
   if (msg.type === "favicon-updated") {
     getRegisterdFavicon().then((favicon) => handleApply(favicon))
   }
+}
+chrome.runtime.onMessage.addListener(handlerOnMessage)
+
+chrome.runtime.connect().onDisconnect.addListener(() => {
+  chrome.runtime.onMessage.removeListener(handlerOnMessage)
+  stopPolling()
 })
+
+// Polling at intervals
+let pollingId: number | undefined
+const startPolling = () => {
+  pollingId = window.setInterval(async () => {
+    try {
+      const favicon = await getRegisterdFavicon()
+      handleApply(favicon)
+    } catch (err) {
+      if ((err as Error).message.includes("context invalidated")) return
+      throw err
+    }
+  }, 1_000)
+}
+const stopPolling = () => {
+  if (pollingId !== undefined) {
+    clearInterval(pollingId)
+    pollingId = undefined
+  }
+}
+startPolling()
+window.addEventListener("pagehide", stopPolling)

@@ -13,7 +13,7 @@ const broadcastFaviconUpdate = async (updatedKey: string) => {
     try {
       const url = new URL(tab.url)
       if (matchUrlPattern(updatedKey, url.href)) {
-        chrome.tabs.sendMessage(tab.id, { type: "favicon-updated" })
+        chrome.tabs.sendMessage(tab.id, { type: "favicon-updated" }).catch(() => {})
       }
     } catch {
       // Ignore
@@ -21,7 +21,7 @@ const broadcastFaviconUpdate = async (updatedKey: string) => {
   }
 }
 
-// Reciece from popup message
+// Recieve from popup message
 chrome.runtime.onMessage.addListener((msg) => {
   if (msg.type === "favicon-updated" && msg.key) {
     broadcastFaviconUpdate(msg.key)
@@ -31,14 +31,14 @@ chrome.runtime.onMessage.addListener((msg) => {
 // When tab URL is changed (for normal reload, navigation)
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   if (changeInfo.status === "complete" && tab.url) {
-    chrome.tabs.sendMessage(tabId, { type: "favicon-updated" })
+    chrome.tabs.sendMessage(tabId, { type: "favicon-updated" }).catch(() => {})
   }
 })
 
 // When tab URL is changed (for hash history on SPA)
 chrome.webNavigation.onHistoryStateUpdated.addListener((details) => {
   if (details.frameId === 0) {
-    chrome.tabs.sendMessage(details.tabId, { type: "favicon-updated" })
+    chrome.tabs.sendMessage(details.tabId, { type: "favicon-updated" }).catch(() => {})
   }
 })
 
