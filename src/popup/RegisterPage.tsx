@@ -10,14 +10,14 @@ import { fileToFaviconDataURI } from "./image"
 import { FaviconsInLocalStorage } from "./type"
 
 interface Props {
-  _url?: string
+  urlToEdit?: string
   navigateListPage: () => void
 }
 
-export const RegisterPage = ({ _url, navigateListPage }: Props) => {
+export const RegisterPage = ({ urlToEdit, navigateListPage }: Props) => {
   const [isLoading, setIsLoading] = useState(true)
   const [faviconOriginal, setFaviconOriginal] = useState(notFoundImage)
-  const [url, setUrl] = useState(_url ?? "")
+  const [url, setUrl] = useState(urlToEdit ?? "")
   const [filePath, setFilePath] = useState<string | null>(null)
   const [file, setFile] = useState<File | null>(null)
   const [isAnimating, setIsAnimating] = useState(false)
@@ -25,7 +25,7 @@ export const RegisterPage = ({ _url, navigateListPage }: Props) => {
   const timer = useRef<number>(0)
   const fileRef = useRef<HTMLInputElement | null>(null)
 
-  const kind = _url !== undefined ? "edit" : "new"
+  const kind = urlToEdit !== undefined ? "edit" : "new"
   const isDisabled = !(file && url)
 
   const originalCtrl = useAnimation()
@@ -42,18 +42,27 @@ export const RegisterPage = ({ _url, navigateListPage }: Props) => {
           setUrl(`${currentUrl.origin}/*`)
         }
       })
+
+      // If this site is already registered, use registered original image as `Original`
+      chrome.storage.local.get<FaviconsInLocalStorage>(url).then((res) => {
+        Object.entries(res).forEach(([registeredUrl, data]) => {
+          if (registeredUrl === url) {
+            setFaviconOriginal(data.original)
+          }
+        })
+      })
     } else {
-      chrome.storage.local.get<FaviconsInLocalStorage>(_url!).then((res) => {
+      chrome.storage.local.get<FaviconsInLocalStorage>(urlToEdit!).then((res) => {
         Object.entries(res).forEach(([url, data]) => {
-          if (url === _url) {
+          if (url === urlToEdit) {
             setFaviconOriginal(data.original)
             setFilePath(data.changeTo)
           }
         })
       })
-      setUrl(_url!)
+      setUrl(urlToEdit!)
     }
-  }, [kind, _url])
+  }, [kind, url, urlToEdit])
 
   useEffect(() => {
     const prev = filePath

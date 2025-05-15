@@ -8,7 +8,7 @@ export const App = () => {
   const [url, setUrl] = useState<string | undefined>(undefined)
 
   return page === "register" ? (
-    <RegisterPage _url={url} navigateListPage={() => setPage("list")} />
+    <RegisterPage urlToEdit={url} navigateListPage={() => setPage("list")} />
   ) : (
     <ListPage
       navigateRegisterNewPage={() => setPage("register")}
