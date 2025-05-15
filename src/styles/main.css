@@ -1,1 +1,40 @@
 @import "tailwindcss";
+
+@theme {
+  --color-primary: #284a77;
+  --color-text-white: #ffffff;
+  --color-text-label: #dbdbdb;
+  --color-text-danger: #e27b7b;
+  --color-bg: #30353d;
+  --focus-visible-outline: solid 2px #a1afe8;
+}
+
+@layer base {
+  img {
+    vertical-align: middle;
+  }
+
+  button {
+    position: relative;
+    cursor: pointer;
+  }
+}
+
+*:focus-visible {
+  outline: var(--focus-visible-outline);
+}
+
+.transition-outline {
+  transition: outline-color 0.15s ease;
+}
+
+::-webkit-scrollbar {
+  width: 11px;
+}
+
+::-webkit-scrollbar-thumb {
+  border: solid 3.5px rgba(0, 0, 0, 0);
+  background-clip: padding-box;
+  border-radius: 9999px;
+  background-color: #58575e;
+}

@@ -21,7 +21,9 @@
     "permissions": [
         "tabs",
         "storage",
-        "scripting"
+        "unlimitedStorage",
+        "scripting",
+        "webNavigation"
     ],
     "host_permissions": [
         "<all_urls>"
