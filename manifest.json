@@ -1,5 +1,5 @@
 {
-    "name": "favicon-changer",
+    "name": "Site icon (favicon) changer",
     "version": "1.0.0",
     "manifest_version": 3,
     "description": "A Chrome extension to change the favicon ⚙️",
