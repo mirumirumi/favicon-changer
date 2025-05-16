@@ -31,6 +31,7 @@ export const RegisterPage = ({ urlToEdit, navigateListPage }: Props) => {
   const originalCtrl = useAnimation()
   const changeToCtrl = useAnimation()
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies:
   useEffect(() => {
     if (kind === "new") {
       chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
@@ -53,8 +54,8 @@ export const RegisterPage = ({ urlToEdit, navigateListPage }: Props) => {
       })
     } else {
       chrome.storage.local.get<FaviconsInLocalStorage>(urlToEdit!).then((res) => {
-        Object.entries(res).forEach(([url, data]) => {
-          if (url === urlToEdit) {
+        Object.entries(res).forEach(([registeredUrl, data]) => {
+          if (registeredUrl === urlToEdit) {
             setFaviconOriginal(data.original)
             setFilePath(data.changeTo)
           }
@@ -62,7 +63,7 @@ export const RegisterPage = ({ urlToEdit, navigateListPage }: Props) => {
       })
       setUrl(urlToEdit!)
     }
-  }, [kind, url, urlToEdit])
+  }, [])
 
   useEffect(() => {
     const prev = filePath

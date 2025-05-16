@@ -1,6 +1,6 @@
 {
     "name": "Site icon (favicon) changer",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "manifest_version": 3,
     "description": "A Chrome extension to change the favicon ⚙️",
     "icons": {
@@ -10,7 +10,7 @@
         "128": "icons/icon_128.png"
     },
     "action": {
-        "default_title": "Change favicon of this site",
+        "default_title": "Site icon (favicon) changer",
         "default_icon": "icons/icon_128.png",
         "default_popup": "src/popup/index.html"
     },
@@ -51,6 +51,6 @@
         }
     ],
     "content_security_policy": {
-        "extension_pages": "script-src 'self'; object-src 'self'; img-src 'self' data: blob:"
+        "extension_pages": "script-src 'self'; object-src 'self'; img-src 'self' https: data: blob:; connect-src 'self' http: https: ws:"
     }
 }

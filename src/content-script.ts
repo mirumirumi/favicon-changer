@@ -22,13 +22,13 @@ const getRegisterdFavicon = async (): Promise<RegisteredFavicon | null> => {
 }
 
 const apply = (dataURI: string) => {
-  const links = document.querySelectorAll("link[rel~='icon']") as NodeListOf<HTMLLinkElement>
+  let links = document.querySelectorAll("link[rel~='icon']") as NodeListOf<HTMLLinkElement>
 
   if (links.length === 0) {
     const link = document.createElement("link")
     link.rel = "icon"
     document.head.appendChild(link)
-    return
+    links = document.querySelectorAll("link[rel~='icon']")
   }
 
   for (const link of links) {
@@ -63,7 +63,6 @@ chrome.runtime.onMessage.addListener(handlerOnMessage)
 
 chrome.runtime.connect().onDisconnect.addListener(() => {
   chrome.runtime.onMessage.removeListener(handlerOnMessage)
-  stopPolling()
 })
 
 // Polling at intervals
