@@ -73,7 +73,7 @@ export const ListPage = ({ navigateRegisterNewPage, navigateRegisterEditPage }: 
       </div>
 
       <div
-        className=" overflow-y-auto"
+        className=" overflow-y-auto pb-[6px]"
         style={{ height: `${444 - 62 /* header */ - 12 /* padding-top */}px` }}
       >
         {favicons.length === 0 ? (
