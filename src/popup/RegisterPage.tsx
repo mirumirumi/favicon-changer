@@ -72,6 +72,35 @@ export const RegisterPage = ({ urlToEdit, navigateListPage }: Props) => {
     }
   }, [filePath])
 
+  // Support Ctrl + V (Cmd + V) to paste images
+  useEffect(() => {
+    const handlePaste = (e: ClipboardEvent) => {
+      const items = e.clipboardData?.items
+      if (!items) return
+
+      for (const item of items) {
+        if (item.kind === "file" && item.type.startsWith("image/")) {
+          const pastedFile = item.getAsFile()
+          if (!pastedFile) continue
+
+          setFilePath((prev) => {
+            if (prev) {
+              URL.revokeObjectURL(prev)
+            }
+            return URL.createObjectURL(pastedFile)
+          })
+
+          setFile(pastedFile)
+        }
+      }
+    }
+
+    window.addEventListener("paste", handlePaste)
+    return () => {
+      window.removeEventListener("paste", handlePaste)
+    }
+  }, [])
+
   const handleInput = (e: FormEvent<HTMLInputElement>) => {
     const inputtedUrl = (e.target as HTMLInputElement).value
     setUrl(inputtedUrl)
