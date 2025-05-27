@@ -1,43 +1,43 @@
 {
-    "compilerOptions": {
-        "target": "ESNext",
-        "module": "ESNext",
-        "strict": true,
-        "baseUrl": "./src",
-        "outDir": "./dist",
-        "sourceMap": true,
-        "moduleResolution": "Bundler",
-        "jsx": "react-jsx",
-        "resolveJsonModule": true,
-        "experimentalDecorators": true,
-        "esModuleInterop": true,
-        "skipLibCheck": true,
-        "forceConsistentCasingInFileNames": true,
-        "noFallthroughCasesInSwitch": true,
-        "noImplicitReturns": true,
-        "noImplicitOverride": true,
-        "noUncheckedIndexedAccess": true,
-        "preserveConstEnums": true,
-        "lib": [
-            "ESNext",
-            "DOM",
-            "DOM.Iterable"
-        ],
-        "types": [
-            "web",
-            "chrome",
-            "bun-types",
-            "vitest/globals",
-            "vitest/importMeta"
-        ],
-    
-        // For Bun configs
-        // "moduleDetection": "force",
-        // "verbatimModuleSyntax": true,
-        // "allowImportingTsExtensions": true,
-        "noEmit": true
-    },
-    "exclude": [
-        "node_modules"
-    ]
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "strict": true,
+    "baseUrl": "./src",
+    "outDir": "./dist",
+    "sourceMap": true,
+    "moduleResolution": "Bundler",
+    "jsx": "react-jsx",
+    "resolveJsonModule": true,
+    "experimentalDecorators": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "noImplicitOverride": true,
+    "noUncheckedIndexedAccess": true,
+    "preserveConstEnums": true,
+    "lib": [
+      "ESNext",
+      "DOM",
+      "DOM.Iterable"
+    ],
+    "types": [
+      "web",
+      "chrome",
+      "bun-types",
+      "vitest/globals",
+      "vitest/importMeta"
+    ],
+
+    // For Bun configs
+    // "moduleDetection": "force",
+    // "verbatimModuleSyntax": true,
+    // "allowImportingTsExtensions": true,
+    "noEmit": true
+  },
+  "exclude": [
+    "node_modules"
+  ]
 }
